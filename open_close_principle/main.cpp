@@ -68,6 +68,30 @@ struct ColorSpecification: Specification
     }
 };
 
+struct SizeSpecification: Specification
+{
+    Size size;
+    SizeSpecification(Size s): size(s){}
+    bool is_satisfied(Product* p)
+    {
+        return p->size == size;
+    }
+};
+
+
+struct AndSpecification: Specification
+{
+    Specification& lspec;
+    Specification& rspec;
+
+    AndSpecification(Specification& one, Specification& two):lspec(one), rspec(two){}
+
+    bool is_satisfied(Product* item) override
+    {
+        return lspec.is_satisfied(item) && rspec.is_satisfied(item);
+    }
+
+};
 
 int main()
 {
@@ -115,5 +139,18 @@ int main()
     {
         cout<< i->name << " is blue" << endl;
     }
+
+    SizeSpecification small(Size::small);
+    for(Product* i : bf.filter(procucts,small))
+    {
+        cout<< i->name << " is small" << endl;
+    }
+
+    AndSpecification size_and_color(green, small);
+    for(Product* i : bf.filter(procucts,size_and_color))
+    {
+        cout<< i->name << " is small" << " and green"<< endl;
+    }
+
     return 0;
 }
