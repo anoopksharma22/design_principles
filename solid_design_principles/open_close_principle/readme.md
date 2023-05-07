@@ -1,3 +1,55 @@
+## Open Close Principle
+This principle state that: The systems should be open to extensions but closed to modifications.
+It means once base classes are defined they should not be modified rather they should be extended to add more functionalities.
+
+### Programing concepts used to implement open close principle:
+- Inheritance
+- Interfaces
+
+### Example:
+Let's say we have a product class and product has various parameters like size, color etc.<br>
+And we want to implement product filters:
+
+```c++
+enum class Color {red, green, blue};
+enum class Size {small, medium, large};
+
+struct Product
+{
+    string name;
+    Size size;
+    Color color;
+
+    Product(string n, Size s, Color c): name(n), size(s), color(c){}
+};
+
+struct ProductFilter
+{
+    vector<Product*> by_size(vector<Product*> items, Size s)
+    {
+        vector<Product*> result;
+        for( auto& item : items)
+            if( item->size == s)
+                result.push_back(item);
+        return result;
+    }
+};
+
+```
+### Issue with above implementation:
+- We need to modify existing Product filter class If we want to add a new filter let say filter by color or filter by both size and color
+- This is bad because our existing code is already in production.
+- If we change existing code then we need to test all features which depends on it.
+
+### Solution:
+- We should design our system in such way that new functionalities can be added by extending the existing classes.
+- We will inheritance and interfaces to implement this solution
+- We define two interfaces `Specification` and `Filter`
+- Now we can extend Specification class to create various specification for filter like: ColorSpecification, SizeSpacification, AndSpecification (for both color and size) and OrSpacification ( for color or size)
+- We can extent Filter class to create our new Filter which will take Product and a specifitation on which we want to filter.
+
+
+```c++
 #include<iostream>
 #include<vector>
 
@@ -15,25 +67,6 @@ struct Product
 
     Product(string n, Size s, Color c): name(n), size(s), color(c){}
 };
-
-
-/*
-With below solution every time we will have to modify the Product filter class
-inorder to add new filter criterion
-*/
-struct ProductFilter
-{
-    vector<Product*> by_size(vector<Product*> items, Size s)
-    {
-        vector<Product*> result;
-        for( auto item : items)
-            if( item->size == s)
-                result.push_back(item);
-        return result;
-    }
-};
-
-
 
 struct Specification
 {
@@ -157,3 +190,4 @@ int main()
 
     return 0;
 }
+```
