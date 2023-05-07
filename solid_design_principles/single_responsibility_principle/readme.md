@@ -3,7 +3,7 @@ States that a class should have only one primary responsibilty and should not ha
 We should always do separation of concerns.
 
 ### Example:
-Let's we need to implement a program to manage Journals:
+Let's say we need to implement a program to manage Journals:
 
 ### Design:
 We can create a class which Journal to represent a journal and add functionaly to add journals and save Journals.
