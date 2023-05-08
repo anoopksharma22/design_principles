@@ -18,11 +18,6 @@ lets say we have a low-level module A and we have a High-level module B.
 #include <tuple>
 using namespace std;
 
-// A. High-level modules should not depend on low-level modules.
-//    Both should depend on abstractions.
-// B. Abstractions should not depend on details. 
-//    Details should depend on abstractions.
-
 enum class Relationship
 {
   parent,
